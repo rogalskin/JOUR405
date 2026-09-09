@@ -33,7 +33,7 @@ umd_fees_pct <- umd_fees |> mutate(pct_change = (`Fall 2026`- `Fall 2021`)/`Fall
 
 Write a few sentences about what you found in those percentages. What's the story here? What questions do you have?
 
-
+The percentage that jumps out is the sustainability fee, but at the same time, that 150% goes from 12 to 30, it'd be overblown to talk about that. Athletics having a steady fee could be a story in its consistency, but there's not much there really. I'm most intrigued by the 58% increase in shuttle bus fees, which is also a substantial numerical amount of money, particularly given I know several people who don't take the buses at all. I'm also curious about student union fees, because that's money where I don't know how I see the benefits from it. My first, obvious question is: why? What's this going toward? But also, where's this advertised to students?
 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
