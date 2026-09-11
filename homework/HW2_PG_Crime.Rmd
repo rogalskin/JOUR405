@@ -9,7 +9,7 @@ In this assignment, we will be working with a dataset reporting the number of cr
 You will need to load the tidyverse library
 
 ```{r}
-
+library("tidyverse")
 ```
 
 Then you'll load the data from the web. The URL for the data is: https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/pg_crime_totals_2024.csv. You will create a dataframe called `pg_crime` that contains the data from this URL.
@@ -17,46 +17,49 @@ Then you'll load the data from the web. The URL for the data is: https://raw.git
 ### Task 2: Load the Data and Describe It
 
 ```{r}
+pg_crime <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/pg_crime_totals_2024.csv")
 ```
 ### Task 3: Describe the Data
 
 You should examine that dataframe carefully by clicking on it in the Environment tab in RStudio. Write a couple of sentences describing the categories of incidents. From a reporting standpoint, are any of the categories more important than others? Why or why not? Do any of them make the job of summarizing the data more difficult? Why or why not?
 
-ANSWER HERE
+#These incidents are pretty generally broken down into categories such as car crimes, assaults, various types of stealing and sex offenses. While some of these categories could be more generalized, the report goes into depth in the manner in which some of these crimes happened, which does provide some helpful context into the degree of crime committed. As a reporter, I care more about the more "serious" crimes that have a greater impact on others and the community as a whole, like homicide and sex crimes and assaults. I don't care as much about stuff like car accidents or petty theft unless some interesting patterns emerge in data. The reports that appear to have the potential for overlap (i.e. the autos stolen vs. autos stolen and recovered, the various categories of assault) will make summarizing the data more difficult should they be mixed. I'm not fully sure how the data set works, though, they might all be separate.
 
 ### Task 4: Calculating Averages
 
 Add up the total number of incidents per month for each category using `mutate()`, calling the new column `total_incidents`. Then calculate the average number of incidents per month for each category of crime using the total number of months, calling the new column `average_incidents`. Assign the result to a new dataframe called `pg_crime_averages`.
 
 ```{r}
-
+pg_crime_averages <- pg_crime |> mutate(total_incidents = rowSums(pick(Jan:Dec), na.rm = TRUE), average_incidents = total_incidents / 12)
 ```
 
 ### Task 5: Describe the Averages
 
 Examine the new dataframe, `pg_crime_averages`, by clicking on it in the Environment tab in RStudio. Write a couple of sentences describing the average number of incidents per month for each category. Which categories have the highest average number of incidents per month? Which have the lowest? What does this tell you about the pattern of crime in Prince George's County? Are there categories that you have questions about? Why or why not?
 
-ANSWER HERE
-
+#Car crimes are the most common -- each of accident, accident with impound, stolen auto and theft from auto have at least 300 instances per month on average. General theft follows closely behind. Those are far and away the most common crimes, while residential robbery, homicide and breaking & entering "other" are the least common, all of which would indicate to me that the crime scene in Prince George's County is characterized by a lot of petty incidents. I'm curious about the auto stolen & recovered category because it appears that more autos are recovered during the summer, even though there's not necessarily more cars stolen during that time. I'm also curious about what sorts of assaults fit under those categories, the average of 70 simple assaults per month feels higher than I'd expect. 
 
 ### Task 6: Testing a Theory
 
 One theory about crime is that it is more likely to occur in the summer months. Test this theory by creating three new columns using `mutate()` that calculate the percentage change compared to the average for each category of crime for the months of June, July, and August. Call the new columns `june_change`, `july_change`, and `august_change`. Assign the result to a new dataframe called `summer_crime_averages`.
 
 ```{r}
+summer_crime_averages <- pg_crime_averages |> mutate(june_change = ((Jun - average_incidents) / average_incidents * 100), july_change = ((Jul - average_incidents) / average_incidents * 100), august_change = ((Aug - average_incidents) / average_incidents * 100))
 ```
 
 ### Task 7: Describe the Summer Crime Averages
 
 Look at the `summer_crime_averages` dataframe by clicking on it in the Environment tab in RStudio. Write a couple of sentences describing the percentage change in the average number of incidents per month for each category of crime for the months of June, July, and August. Do you see any patterns? What does this tell you about the theory that crime is more likely to occur in the summer months?
 
-ANSWER HERE
+#Of the crimes with multiple hundred instances per month, there is not a huge change during the summer months — there are only two data points that're over 10% deviation from the average. One of those is June stolen autos, which, well, the June mark isn't even the highest number of autos stolen in one month in 2025, and thefts in July, which again is not the highest point in one month. Theft as a whole seemed to have an increase in the later months of the year, but not necessarily a summer thing. I don't think that that theory is very well-founded statistically. There are some percentages that, when taken out of context, could seem important, but I would really argue that a 28% jump in residential robberies going from 2.333 average to 3 isn't article-worthy. There's one quirky thing where summer does seem to make a difference -- for example, it seems like the chances of your auto getting found/returned are way higher during the summer. 
 
 ### Task 8: What's the Story?
 
 Write up a lede and nutgraf of a story focused on the crime data in Prince George's County. It could be from any of the dataframes you've created in this assignment. The lede should be a single sentence that summarizes the most important information in the data. The nutgraf should be a paragraph that provides more context and explains why the data is important.
 
-ANSWER HERE
+#Was your car stolen? If it happened in the summer, you might have a little more luck in your efforts to get it back.
+
+#According to 2025 crime data collected in Prince George's County, cars stolen in May, June and July are between 18% and 43% more likely to be recovered by police. According to Prince George's County police chief George Nader, this significant difference may come down to _________ (interview required).  
 
 ### Task 9: Save Your Work and Put it on GitHub
 
