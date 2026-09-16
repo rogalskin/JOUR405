@@ -39,7 +39,7 @@ team_aces |> mutate(percentile = ntile(total_aces, 100))
 
 Write a couple of sentences that puts Maryland into context with the other teams in the dataset. You can do some Internet research to help with this.
 
-
+#Maryland is in the 95th percentile in service aces, and it is the highest-ranked Big Ten team. It's the second highest-ranked power conference team behind Pitt (although I'm not sure if the Big East would qualify as a power conference in volleyball, that would put them fourth). That performance  would indicate that the Terps are among the best at teams facing higher-level defenses at still managing to log service aces -- the fact that Maryland is able to accomplish those numbers with 20 games against Big Ten teams means more than, say, Sac State in the WCC. However, Maryland volleyball is not very good and was not very good back then. The Terps going below .500 indicates that they were not as good at getting in-system points throughout the season. Pitt was a semifinalist in the NCAA Tournament that year, indicating that the skill can be linked with success, but it's clearly not the end-all be-all.      
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
