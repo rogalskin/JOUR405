@@ -7,8 +7,10 @@ Follow along with the demo to learn how to calculate crime rates using R and the
 ### Task 1: Load the tidyverse and install and load janitor
 
 ```{r}
+#install.packages("tidyverse")
+#updated my R after last week's HW
 library(tidyverse)
-install.packages("janitor")
+#install.packages("janitor")
 library(janitor)
 ```
 
@@ -48,8 +50,7 @@ crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/populat
 
 Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations? What might explain some of the results you found?
 
-
-
+###The years with the highest overall crime rates were all in the 1990s and 80s, while the years with the lowest overall crime rates were all in the 2010s through to 2020, which had the lowest crime rate of any year surveyed. This pattern makes a lot of sense; the 2010s were an era of greater childhood supervision and an increased emphasis on education, and security and technological advances have made it far harder to commit crimes and get away with them. Back in the 90s, meanwhile, drugs were rampant and there was less lowkey supervision and higher policing. The job market also was not great.   
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
