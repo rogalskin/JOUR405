@@ -60,3 +60,19 @@ Write up a lede and nutgraf of a story with the _best_ story idea you've found i
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10: Percentiles
+
+```{r}
+md_cities_percentiles <- md_cities_change |> mutate(violent_crime_percentile =
+  ntile(violent_rate_2020, 100))
+  
+md_cities_percentiles |> summarize(violent_crime_percentile = IQR(violent_rate_2020))
+  
+```
+
+#Ten cities are above the 90th percentile, while another city is right at the 90th percentile.
+
+#The interquartile range is just under 42. Frederick's violent crime rate was in the 22nd percentile. If we excluded the places where there was no violent crime at all, it had the lowest violent crime rate of any town. However, because so many towns had no crime, having very little crime is not an outlier. That makes the story I pulled out less significant because Frederick is within a statistically normal range, it has not become some outlier.
+
+#However, it does have the lowest violent crime rate among towns where there is actually violent crime, which is an impressive statistic in and of itself that would validate the story, even though the IQR doesn't do much to that extent.
