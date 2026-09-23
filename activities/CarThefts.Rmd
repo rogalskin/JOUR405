@@ -33,9 +33,9 @@ car_thefts |> summarize(mean = mean(count), sd = sd(count))
 car_thefts |> 
   ggplot() + 
   geom_histogram(aes(x = count), binwidth = 2) +
-  geom_vline(aes(xintercept = mean(count)), color = "red", linetype = "dashed", size = 1) +
-  geom_vline(aes(xintercept = mean(count) - sd(count)), color = "blue", linetype = "dashed", size = 1) +
-  geom_vline(aes(xintercept = mean(count) + sd(count)), color = "blue", linetype = "dashed", size = 1)
+  geom_vline(aes(xintercept = mean(count)), color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = mean(count) - sd(count)), color = "blue", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = mean(count) + sd(count)), color = "blue", linetype = "dashed", linewidth = 1)
 ```
 
 
@@ -48,6 +48,6 @@ car_thefts |>
 
 Is the distribution normal or skewed in one direction? Write a sentence in which you describe the range of the data covered by one standard deviation from the mean on both sides - how much of the data falls in that range?
 
-
+#The distribution is pretty normal, it's very slightly right-skewed. About 68% of responses are supposed to fall within one standard deviation from the mean for normal distribution, and I would say this is slightly higher, with the standard deviation encompassing maybe around 70-75%. 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
