@@ -7,11 +7,13 @@ In this assignment, you will be working with a dataset of songs played on Spotif
 ### Task 1: Load the tidyverse
 
 ```{r}
+library(tidyverse)
 ```
 
 ### Task 2: Load the Spotify Songs dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/spotify_2020.csv
 
 ```{r}
+songsdataset <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/spotify_2020.csv")
 ```
 
 ### Task 3: Calculate the mean and standard deviation of the danceability scores
@@ -19,6 +21,7 @@ In this assignment, you will be working with a dataset of songs played on Spotif
 Write code to calculate the mean standard deviation of the danceability scores in the Spotify dataset. Display those.
 
 ```{r}
+songsdataset |> summarize(mean = mean(danceability), sd = sd(danceability))
 ```
 
 ### Task 4: Create a histogram of the danceability scores
@@ -26,6 +29,8 @@ Write code to calculate the mean standard deviation of the danceability scores i
 Write code to create a histogram of the danceability scores in the Spotify dataset, based on the example we did in class.
 
 ```{r}
+songsdataset |> ggplot() +
+  geom_histogram(aes(x = danceability), binwidth = 0.02)
 ```
 
 ### Task 5: Add a line to the histogram for the mean danceability score
@@ -33,11 +38,19 @@ Write code to create a histogram of the danceability scores in the Spotify datas
 Write code to add a vertical line to the histogram for the mean danceability score, based on the example in class.
 
 ```{r}
+songsdataset |> ggplot() +
+  geom_histogram(aes(x = danceability), binwidth = 0.02) +
+  geom_vline(aes(xintercept = mean(danceability), color = "blue", linetype = "dashed")
+  )
 ```
 
 ### Task 6: Describe our results
 
 Write a few sentences about the distribution of danceability scores in the Spotify dataset. Is it a normal distribution, or is it skewed in one direction? What does the mean and distribution tell us about the songs in the dataset?
+
+#The distribution of danceability scores is pretty left-skewed, there's a serious tail extending all the way towards zero that drags down the danceability mean big-time from a massive amount of songs with danceability hovering around 0.7. The standard deviation of 0.16 means that 95% of Spotify's selected catalogue falls between danceability scores of roughly 0.35 and 0.99, which makes sense -- the majority of these songs are at least ok to dance to. I'm sure many toward the lower end of this dataset could be some nice ballads or interpretive dances, judging from a lot of the songs that were on the top this "danceability" score seemed to favor songs with high tempo and lower instrumentalness, the inverse of which I would argue really deserves some more love (but I know I'm in the minority in my generation on that). 
+
+#I was curious what these awful-to-dance to outliers were, and the lowest-scoring song was literally white noise, which a bunch of people use to sleep because it's calm and predictable sound, and a bunch of other sleepscapes. Like, no duh that that is awful to dance to, and in a real analysis of songs and danceability, I would think that it would make sense to factor out that subgroup -- yes, it would be biased if we were trying to talk about overall how danceable Spotify's popular catalogue is, but I don't think anyone who really cared for an answer for that question would think that actual white noise should count in the analysis. 
 
 ### Task 7: Save Your Work and Put it on GitHub
 
