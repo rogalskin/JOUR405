@@ -32,7 +32,7 @@ library(lubridate)  # For working with dates
 Load the accident data from our CSV file at https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/daily_accidents.csv into a dataframe called `accidents`:
 
 ```{r load-data}
-
+accidents <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/daily_accidents.csv")
 ```
 
 ## Data Exploration
@@ -69,6 +69,7 @@ ggplot(accidents, aes(x = date, y = total)) +
 Looking at the time series visualization above, identify at least two noticeable patterns or anomalies. What questions would you want to investigate further based on this initial view of the data? How might these visual patterns translate into potential story angles?
 
 ANSWER HERE
+#Judging from the axes for the years, it appears that there is a bump in accidents towards the end of the year -- I would have expected that spike to be closer to the very end of one year and start of another, when the weather was theoretically the worst and there was the least amount of natural light during the day. Also, at the end of the dataset, it appeared that accidents had reached their lowest average totals in five years. That is a significant change, and I would be curious to see whether anything happened. There's the heavy drop during COVID lockdown as well, but that's not surprising to me. Also, 2021 as a whole seems that it had more accidents, which is curious.
 
 The daily data is quite noisy, so let's also look at weekly patterns:
 
@@ -108,6 +109,7 @@ ggplot(accidents, aes(x = day_of_week, y = total)) +
 Based on the day-of-week analysis, which day(s) have the highest and lowest average accidents? Why might these patterns exist?
 
 ANSWER HERE
+#It appears that the highest average accidents occur on Fridays and Saturdays. There's a solid chance in my opinion that that's because of how much more commonly alcohol is imbibed during those times. People are also going out more and have a lower chance of being in a standard day-to-day routine. The lowest average accidents are between Monday and Thursday. Those numbers are pretty steady all the way through the week there -- as I just said, the standard routine will get many people in their commutes, where they have experience with specific driving situations, and fewer people will be doing reckless things because there simply isn't time for that in this capitalist society. 
 
 ## Calculating Z-Scores
 
@@ -119,9 +121,9 @@ Now, using the accidents dataframe, add three columns using `mutate()`: mean_acc
 # Calculate z-scores for total accidents
 accidents <- accidents |>
   mutate(
-    mean_accidents = REPLACE_ME,
-    sd_accidents = REPLACE_ME,
-    z_score = (REPLACE_ME - REPLACE_ME) / REPLACE_ME
+    mean_accidents = mean(total),
+    sd_accidents = sd(total),
+    z_score = (total - mean(total)) / sd(total)
   )
 
 # Display the data with z-scores
@@ -157,6 +159,7 @@ unusual_days |>
 Choose one of the top 10 unusual days and research what might have happened on that date. Look for weather events, holidays, major incidents, or other factors that could explain the unusual number of accidents. Briefly describe your findings and how you would incorporate this context into a story.
 
 ANSWER HERE
+#I investigated Nov. 16, 2018, because its status as the only pre-2020 date to crack the top 10 of this list intrigued me. According to weatheronthisday.com (only the finest sources here in journalism), on that day, there was 1.1 inches of precipitation, including an inch of snow. This was really serious weather -- NWS categorized it as a flood in several parts of Virginia just over the border. When looking at the dates that were the most abnormal, it would be important in my mind to take a set number of the top outliers -- say, this 10 -- and research what could have explained each of those days. I think a solid table with the z scores (or just a percent chance of this day happening or some other statistic to help a reader understand) and then a brief explanation would make sense.
 
 Let's visualize these unusual days:
 
@@ -186,9 +189,9 @@ Let's calculate z-scores that account for day of week patterns based on the same
 accidents <- accidents |>
   group_by(day_of_week) |>
   mutate(
-    dow_mean = REPLACE_ME,
-    dow_sd = REPLACE_ME,
-    dow_z_score = (REPLACE_ME - REPLACE_ME) / REPLACE_ME
+    dow_mean = mean(total),
+    dow_sd = sd(total),
+    dow_z_score = (total - mean(total)) / sd(total)
   ) |>
   ungroup()
 
@@ -208,6 +211,7 @@ unusual_dow |>
 Compare the days that have extreme z-scores overall versus those with extreme day-of-week z-scores. How do these lists differ? What journalistic insights can you draw from comparing these two different approaches to measuring "unusual" days?
 
 ANSWER HERE
+#A few of the extreme outliers, including the 58 on Friday 10/29/2021 and 1 on Monday 11/19/2021 still make it into this list because they're such extremes overall. Past that, though, there's a lot more emphasis on non-weekend days, with days that are the middle of the week with exceptionally high numbers even larger outliers per the z-score. It's more interesting to see days that are outliers for their days of the week in this manner -- 45 crashes on a random Wednesday in May is very strange and more newsworthy.
 
 Let's see how many unusual days we have for each day of the week:
 
@@ -287,6 +291,7 @@ unusual_monthly |>
 Based on the monthly pattern analysis, which months have the highest and lowest average accidents? Develop a hypothesis about why these seasonal patterns exist.
 
 ANSWER HERE
+#According to the pattern analysis, January has the lowest average accidents per month, and October has the highest average accidents per month. I'd hypothesize that people are much more concerned with their behavior following New Year's and attempt to implement changes in their lives wholesale, including being better/smarter drivers. Also, with this coming after the holiday season, fewer people are traveling out of their normal routines as a whole. In October, meanwhile, I'd guess that this has something to do with all the leaves and branches falling from trees as nature dies out -- there's more junk on the road, which can lead to cars slipping or trying to dodge things and hitting other cars. 
 
 ## Identifying Extreme Outliers
 
@@ -312,8 +317,17 @@ if(nrow(extreme_outliers) > 0) {
 For the extreme outliers identified (z-scores beyond ±3), what do they have in common?
 
 ANSWER HERE
+#The majority of these dates are along the weekend, and the majority of these dates are also toward the end of the month. They're also almost all outliers on the high side. It's also very interesting that more than half of them came in 2021.
 
 ## Your Best Story Pitch
 
 ### Task 10 (5 points)
 Based on all the analyses performed, craft your best story pitch, including a headline and lede. Be sure to include what kinds of sources/people you'd talk to for the story.
+
+#Prince George's County accidents spiked in 2021, data shows 
+
+#As society readjusted to life following COVID-19 lockdowns in 2021, drivers on Prince George's County roads felt a return to normal that was far bumpier than expected.
+
+#Capital News Service analyzed accident data collected in Prince George's County from Feb. 6, 2017, to April 17, 2025. Six of the seven days that were the greatest statistical outliers across the eight-year span occurred in 2021.   
+
+#For this story, I would ideally want to talk to people who got into accidents on one of those crazy days -- it'd be really interesting to be able to find the one singular person on the low outlier as well. It'd also make sense to talk to road safety experts and first responders who had to deal with these increased incidents. I believe that the natural conclusion to this story would be to talk about the return to a steady and lower pattern, so it would make sense to wrap back around to those citizen interviews for the end. 
