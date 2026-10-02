@@ -9,6 +9,8 @@ In this assignment, you'll build on your z-score skills to answer probability qu
 Load the tidyverse and the White House salaries data from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/white_house_salaries_2025.csv into a dataframe called `wh_salaries`
 
 ```{r}
+library(tidyverse)
+wh_salaries <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/white_house_salaries_2025.csv")
 ```
 
 ### Task 2: Filter and summarize (2 points)
@@ -18,19 +20,26 @@ You may remember from HW3 that some White House staffers have a salary of $0. Le
 ```{r}
 wh_paid <- wh_salaries |>
   filter(SALARY > 0)
-
-
+ 
+wh_paid |> summarize(mean = mean(SALARY), median = median(SALARY), sd = sd(SALARY))
 
 ```
 
 Now create a histogram of the paid salaries with a vertical line for the mean and two more for ±1 standard deviation, similar to what you did in HW6 with Spotify data.
 
 ```{r}
+wh_paid |> 
+  ggplot() +
+  geom_histogram(aes(x = SALARY), binwidth = 15000) + 
+  geom_vline(aes(xintercept = mean(SALARY)), color = "green", linetype = "dashed") +
+  geom_vline(aes(xintercept = mean(SALARY) + sd(SALARY)), color = "purple", linetype = "dashed") +
+  geom_vline(aes(xintercept = mean(SALARY) - sd(SALARY)), color = "purple", linetype = "dashed")
+
 ```
 
 **Describe the shape of the distribution. Is it roughly normal? Skewed? Where do most salaries cluster?**
 
-ANSWER HERE
+#This data is roughly normal, but there's a pretty solid right skew. The mean is significantly higher than the median, which indicates that there are several high-value salaries pulling the average up, while many of the salaries are clustered around the $90,000/year mark.
 
 ### Task 3: The Empirical Rule (3 points)
 
@@ -64,7 +73,7 @@ empirical
 
 **How closely does the data follow the empirical rule? What does any deviation tell you about the distribution?**
 
-ANSWER HERE
+#This data follows the imperical rule very closely. It's almost exactly on with the 65 and 99.7 percentage points, but there are more salaries greater than two standard deviations away from the mean than would be expected. That tells us again that there's some chunky salaries skewing things, but the data is pretty normally distributed.
 
 ### Task 4: From z-scores to probability with pnorm() (4 points)
 
@@ -102,7 +111,7 @@ actual_prob
 
 **Write a sentence describing this probability in plain English. How does the normal approximation (prob_less) compare to the actual percentage?**
 
-ANSWER HERE
+#The probability of a White House salary being over $150,000 is higher in reality than one would expect from a set of normal data. 
 
 ### Task 5: Probability between two values (3 points)
 
@@ -112,21 +121,21 @@ You'll need to calculate z-scores for those two figures, use `pnorm()` for each,
 
 ```{r}
 
-z_lower <- (REPLACE_ME - mean_sal) / sd_sal
-z_upper <- (REPLACE_ME - mean_sal) / sd_sal
+z_lower <- (80000 - mean_sal) / sd_sal
+z_upper <- (120000 - mean_sal) / sd_sal
 
 prob_between <- pnorm(z_upper) - pnorm(z_lower)
 prob_between
 
 # Verify with actual data
-actual_between <- sum(wh_paid$SALARY >= REPLACE_ME & wh_paid$SALARY <= REPLACE_ME) / total_n
+actual_between <- sum(wh_paid$SALARY >= 80000 & wh_paid$SALARY <= 120000) / total_n
 actual_between
 
 ```
 
 **Interpret this result. What does this "middle range" tell us about the White House salary structure?**
 
-ANSWER HERE
+#This middle range tells us that there are fewer "middle range" salaries in the White House -- more of the salaries are concentrated on the more extreme lower and higher ends. There's the haves and the have-nots (or have-lesses), which is quite fitting.
 
 ### Task 6: Expected vs. observed (3 points)
 
@@ -158,7 +167,7 @@ bins |> select(category, expected_count, observed_count, difference)
 
 **Where does reality differ most from what the normal distribution predicts? What might explain those differences?**
 
-ANSWER HERE
+#The biggest differences in reality and normal salaries come with the numbers $90k and under. The huge difference between expected and observed below $60k is likely because there is some standardized "lowest", presumably the $65.5k, where almost all paid jobs start. There isn't a spread below this, it just drops to unpaid workers. But the fact that there aren't those lower numbers means they've been bumped up to a slightly higher point -- that 60-90 range, where there are so many more salaries than expected. Assistants also mostly seem to be paid at the same rate, and it would make sense that there would be a whole lot of them, given how many members of the staff will need assistants.
 
 ### Task 7: Story pitch (4 points)
 
@@ -166,7 +175,11 @@ Based on your probability analysis, write a headline and lede for a story about 
 
 Then write 2-3 sentences describing how you would use probability thinking to advance this story — what could you compare these probabilities to, and what additional analysis would help?
 
-ANSWER HERE
+#HL: Top White House officials earn more money than expected
+
+#Nearly nine percent of White House workers made over $192,000 in 2025, almost double as many as would have been expected in a statistical analysis of staff salaries.   
+
+#Probability thinking would lead me to consider comparing these probabilities to the largest dataset of publicly available employment information for civilian workers and whether these trends matched up with the expected versus observed distribution of American salaries. I would also want to compare the salaries of various departments to one another -- see whether defense workers made more than probabilistically expected and how that number compared to energy workers, see whether the increases/dips in expected salaries are housed in specific places or administration-wide.
 
 ### Task 8: Save Your Work and Put it on GitHub
 
