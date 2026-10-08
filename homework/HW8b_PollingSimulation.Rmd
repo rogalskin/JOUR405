@@ -9,7 +9,7 @@ That difference matters more than it might seem. When a proportion is close to 5
 ### Task 1: Load the tidyverse
 
 ```{r}
-
+library(tidyverse)
 ```
 
 ### Task 2: Load the CES data
@@ -19,7 +19,7 @@ Load the CES 2024 religion dataset from the same URL as the in-class activity an
 `https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/ces_2024_religion.csv`
 
 ```{r}
-
+ces <-  read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/ces_2024_religion.csv")
 ```
 
 ### Task 3: Calculate the population proportion
@@ -27,36 +27,43 @@ Load the CES 2024 religion dataset from the same URL as the in-class activity an
 Create a new column called `evangelical` that is `TRUE` if a respondent's `trad` value is `"White Evangelical"` and `FALSE` otherwise. Then calculate the proportion of the full dataset that is White Evangelical and save it as `population_proportion`.
 
 ```{r}
-
+ces <- ces |> 
+  mutate(EVANGELICAL = trad %in% c('White Evangelical'))
+population_proportion <- mean(ces$EVANGELICAL)
+population_proportion
 ```
 
 Write down this value. How does it compare to the unaffiliated proportion (about 0.36) from the in-class activity?
 
-ANSWER HERE
+#Just over 10% of the population is evangelical, which is a far smaller proportion of the population than the unaffiliated proportion we worked with in class. It's almost 75% smaller. 
 
 ### Task 4: Take a single small sample
 
 Use `set.seed(42)` and sample 50 rows from `ces`. Save it as `sample_50`. Calculate the proportion of White Evangelical respondents in your sample.
 
 ```{r}
-
+set.seed(42)
+sample_50 <- ces |> sample_n(50)
+mean(sample_50$EVANGELICAL)
 ```
 
 How close is your sample estimate to the population proportion? How does the accuracy compare to what you saw with the unaffiliated group in class?
 
-ANSWER HERE
+#The sample estimate is not very close at all -- that 16% rate of evangelicals in the chosen sample is a 60% larger chunk than what the full population is. This variance is way beyond what we saw in class.
 
 ### Task 5: Take a single larger sample
 
 Use `set.seed(1966)` and sample 500 rows. Save it as `sample_500`. Calculate the proportion of White Evangelical respondents in this sample.
 
 ```{r}
-
+set.seed(1966)
+sample_500 <- ces |> sample_n(500)
+mean(sample_500$EVANGELICAL)
 ```
 
 Did the larger sample improve the estimate? How does the improvement compare to what you saw in class?
 
-ANSWER HERE
+#The larger sample did improve the estimate, which is now just one hundredth off from the true population total. This has it aligned with the level of accuracy that we saw in class. The amount of improvement is far better, but that's because the first sample I took was way off from the true proportion of the population. 
 
 ### Task 6: Simulate many polls
 
@@ -68,7 +75,7 @@ set.seed(42)
 simulate_polls <- function(data, sample_size, n_simulations = 1000) {
   proportions <- replicate(n_simulations, {
     s <- data |> sample_n(sample_size)
-    mean(s$evangelical)
+    mean(s$EVANGELICAL)
   })
   tibble(proportion = proportions, sample_size = sample_size)
 }
@@ -82,25 +89,39 @@ simulations_500 <- simulate_polls(ces, 500)
 Create two histograms side by side using the code structure from class. Add a vertical line at `population_proportion`. Make sure to update the title and subtitle to reflect that this simulation is about White Evangelicals.
 
 ```{r}
+simulations_all <- bind_rows(simulations_50, simulations_500) |> 
+  mutate(sample_size = paste("n =", sample_size))
 
+ggplot(simulations_all, aes(x = proportion)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  geom_vline(xintercept = population_proportion, color = "red", linetype = "dashed", linewidth = 1) +
+  facet_wrap(~sample_size) +
+  labs(
+    title = "Distribution of Sample Estimates: Share White Evangelical",
+    subtitle = "Red line = true population proportion. Each histogram shows 1,000 simulated polls.",
+    x = "Sample Proportion",
+    y = "Count",
+    caption = "Source: 2024 Cooperative Election Study"
+  ) +
+  theme_minimal()
 ```
 
 ### Task 8: Reflect on what you see
 
 **Describe the shape of the n=50 histogram.** Is it as symmetric as the unaffiliated histogram from class? Why do you think that is, given that White Evangelicals make up only about 10% of the population?
 
-ANSWER HERE
+#The shape of the n=50 histogram is almost as symmetric as the unaffiliated histogram from class that also worked with n=50. I think that that is likely because as long as we are taking several samples, a high number of samples will also tend to result in more accurate averages, in a similar manner to how increasing the sample size would do so. Whether the proportion is 10%, 30%, or 90%, as long as a lot of samples are taken, the extremes should be smoothed out.
 
 **Compare the n=50 and n=500 histograms for this group.** How much does the distribution change with a larger sample? Is the improvement bigger or smaller than what you saw in class with the unaffiliated group?
 
-ANSWER HERE
+#The distribution of the proportions becomes much narrower and closer to the true population proportion with the larger sample. The improvement is not quite as large as what we saw in class with the unaffiliated group, as there is still more variance extending outwards for this sample. That's a characteristic that is likely to exist constantly because it's a smaller proportion of the population.
 
 **A news organization wants to report on White Evangelical voters using a poll of 200 people.** Based on your simulations, roughly how many White Evangelical respondents would that poll be likely to include? What does that suggest about the reliability of estimates for smaller subgroups?
 
-ANSWER HERE
+#That poll would most likely include about 20 White Evangelical voters. The reliability of estimates for smaller subgroups increases as the overall population sample increases, and an increased group size would make it more viable to do that story. There may not be enough White Evangelicals from a 200-person poll to properly analyze the group without making generalizations that are too broad.  
 
 **Imagine you are covering the 2028 presidential election and a campaign shares a poll showing White Evangelical support at 78%.** The poll sampled 400 people. Based on everything you've seen in this assignment and in class, what would you want to know before reporting that number?
 
-ANSWER HERE
+#Before reporting that number, I would want to know what population that poll sampled from and how the participants in the poll were chosen. Polls arising from a campaign are likely to have some level of bias. I would also want to know how other polls of similar populations see the data to try to determine whether this sample that has been shown could be an outlier.  
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
