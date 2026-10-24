@@ -58,4 +58,4 @@ weekly_wmata |>
 
 **Answer this question:** Describe the trend you see. Is ridership going up, down, or staying flat? What are the big dips, and what might explain them? What would you want to know before writing a story about Metro weekly ridership trends?
 
-ANSWER HERE
+#Generally, ridership is going up. There were large dips around the turn of the year in both 2025 and 2026, which may be explained by the relative lack of routine travel after the holiday season and the likely work holidays/personal time off taken around that time. There's also what looks like a Thanksgiving week dip before 2026. What I would want to know before writing a story on weekly ridership trends is what explains the peaks around March, April and June in the data. I would also want to know about the expansion or contraction of metro services because of construction, because the introduction of new segments that would theoretically bring new users could impact things, as would some areas closing for chunks of time. I would also want to know if there had been any changes in the metro fare during this time. I'm really just looking for ways that any changes could possibly be explained. 
