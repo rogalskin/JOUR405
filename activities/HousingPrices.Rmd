@@ -193,10 +193,10 @@ You now have all the statistical evidence. But writing the story requires more t
 
 **Part A:** The local officials are going to claim the transit line increased home values. Based on your analysis, is that claim supported? Write 2-3 sentences for the top of your story that accurately reflect both the statistical significance AND the effect size. Don't just echo the officials' talking points — interrogate them.
 
-#Since a light rail line connecting a neighborhood opened, data collected from 14 recent home sales show the average sale price having risen from $285,000 to $304,500 — a nearly 7% increase in valuation.  Officials say that the rail line has led to these price increases, but the sale figures following the rail line's installation have not been significantly greater than what was statistically commonplace before the transit.
+#Since a light rail line connecting a neighborhood opened, data collected from 14 recent home sales show the average sale price having risen from $285,000 to $304,500 — a nearly 7% increase in valuation.  Officials say that the rail line has led to increased property values, while the sale figures following the rail line's installation have been greater overall but not outliers compared to what was statistically commonplace before the transit.
 
 **Part B:** A $19,500 increase is real and statistically significant, but what *else* could explain rising home prices in this neighborhood? List at least two alternative explanations that a good reporter would want to investigate before attributing the increase entirely to the transit line.
 
-#I personally would want to investigate whether there has been a change in the ratings/quality of the schools in the area as well as the overall value of money, which could potentially make housing values rise in more places. 
+#I personally would want to investigate whether there has been a change in the ratings/quality of the schools in the area as well as the overall value of money, which could potentially make housing values rise across the area. 
 
 When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
