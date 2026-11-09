@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+install.packages("cfbfastR")
+library
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+```{r}
+library(cfbfastR)
+library(dplyr)
+library(ggplot2)
+install.packages("sdvplotR", repos = c("https://sportsdataverse.r-universe.dev", getOption("repos")))
+```
+
+```{r}
+exports <- getNamespaceExports("cfbfastR")
+families <- c("load_cfb_", "load_espn_cfb_", "load_ncaa_mfb_", "cfbd_",
+              "espn_", "fox_cfb_", "yahoo_cfb_", "calculate_")
+data.frame(
+  prefix = paste0(families, "*()"),
+  functions = vapply(families, function(p) sum(startsWith(exports, p)), integer(1)),
+  row.names = NULL
+) |>
+  knitr::kable()
+```
+
+```{r}
+passing_df <- dplyr::bind_rows(
+   cfbd_stats_season_player(2026, team = "Maryland", category = "passing"),
+   cfbd_stats_season_player(2010, team = "Maryland", category = "passing"),
+   cfbd_stats_season_player(2007, team = "Maryland", category = "passing"),
+   cfbd_stats_season_player(2025, team = "Maryland", category = "passing")) |>
+   dplyr::group_by(team) |>
+   dplyr::select(team,
+                 player,
+                 passing_completions,
+                 passing_att,
+                 passing_yds,
+                 passing_td,
+                 passing_int,
+                 passing_ypa) |>
+   arrange( desc(passing_yds), team)
+```
+
+#Thanks for your help on this. These season player stats go back to 2007, meaning I can call it an even last 20 years of information. It contains all sorts of passing statistics, and it also has some extra stats like EPA/play. The most important columns for my analysis will be the various stats, such as completion percentage, yards per attempt, EPA/play, etc. 
+
+#There are other statistics that I think would be helpful to grab, though. There are some in the cfbd_passing_*() and cfbd_rushing_*() families, but I'm not sure how I grab functions from different families. I'll also want to figure out how to get the dataset to identify what class quarterbacks were and do some sort of if/when conditional sorta thing to filter. Not sure how that'll work, but I'll have more time to try to investigate later.
