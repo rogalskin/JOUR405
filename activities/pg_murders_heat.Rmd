@@ -44,6 +44,7 @@ pg_murders_heat |>
 pg_murders_heat |> 
   ggplot() +
   geom_text(aes(x=temperature, y=murders, label=month), size = 5) +
+  geom_point(aes(x=temperature, y=murders, label=month)) +
   geom_smooth(aes(x=temperature, y=murders, method="lm"))
 
 ```
@@ -51,6 +52,6 @@ pg_murders_heat |>
 
 ### Task 6: Describe the results of both the correlation calculation and the scatterplot.
 
-The results of both the correlation calculation and the scatterplot show both increased temperatures and overall numbers of murders during May, June, July, August and September (with upper bounds of about 80 degrees and 45 murders) — and decreased temperatures and murders in November, Februrary, January and December (with lower bounds of around 35 degrees and 20 murders). The scatterplot illustrates somewhat of a steep dropoff between these two categories of months, relating to the conclusion that more murders occur during the summer months (when temperatures are high and it's more appealing for indivudals to be outside), while a decreased number of murders occur in relation to colder temperature-months (specifically in the winter season, when it's less appealing for individuals to go outside and less accessible for murders to take place). In short, there's definitely a moderate to strong correlation between overall temperatures and number of murders.
+#The correlation coefficient between heat and murders of 0.58 is a fairly strong relationship. That would indicate that higher temperatures are increased with more murders, and the scatterplot indicates that as well. The three most murderous months are all among those with hotter average temperatures, and the line of best fit shows a clear increase in the amount of homicides as temperature goes up. This is not a fully nailed-on guarantee — the outliers of August and March clearly indicate that — but there definitely appears to be a relationship between the two factors. 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
