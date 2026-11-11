@@ -13,6 +13,7 @@ Your task in this assignment will be to examine the relationship between those t
 ### Task 1: Load the tidyverse
 
 ```{r}
+library(tidyverse)
 ```
 
 ### Task 2: Load the GDP and DJIA data
@@ -20,6 +21,7 @@ Your task in this assignment will be to examine the relationship between those t
 Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv
 
 ```{r}
+quarterlydata <-  read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv")
 ```
 
 ### Task 3: Calculate the correlation coefficient
@@ -27,6 +29,7 @@ Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/he
 Use the `cor()` function to calculate the correlation coefficient between the DJIA and GDP.
 
 ```{r}
+quarterlydata |> summarize(correlation = cor(GDP, DJIA, method="pearson"))
 ```
 
 ### Task 4: Create a scatterplot
@@ -34,12 +37,20 @@ Use the `cor()` function to calculate the correlation coefficient between the DJ
 Use the `ggplot()` function to create a scatterplot of the DJIA and GDP. Be sure to label your axes and add a title.
 
 ```{r}
+quarterlydata |>
+  ggplot() +
+  geom_point(aes(x =GDP, y =DJIA)) +
+  geom_smooth(aes(x=GDP, y=DJIA), method="lm") +
+  labs(title = "Relation Between Stock Market and U.S. GDP",
+       x = "Gross Domestic Product",
+       y = "Dow Jones Industrial Average")
 ```
 
 ### Task 5: Describe our results
 
 Write a few sentences about the relationship between the DJIA and GDP. Is there a strong correlation between the two variables? What does the scatterplot show?
 
+#There appears to be a correlation between the DJIA and GDP. The correlation coefficient of 0.95 achieved through Pearson's R is incredibly close to 1, which indicates on its own that these variables have a strong effect on each other — when one is up, the other is up, and vice versa. The scatterplot furthers this evidence, as there is a clear tendency of the data toward a line of best fit, and the variance on the line of best fit is quite narrow. The relationship between the DJIA and GDP is demonstrated to be strong, which makes sense, given what these actually measure. 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
